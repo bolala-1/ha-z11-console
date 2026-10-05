@@ -76,3 +76,13 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
 
     _LOGGER.info("Z11 Console successfully loaded and mounted at /z11/ !")
     return True
+
+
+async def async_setup_entry(hass: HomeAssistant, entry: config_entries.ConfigEntry) -> bool:
+    """Set up Z11 Console from a config entry."""
+    return await async_setup(hass, {})
+
+
+async def async_unload_entry(hass: HomeAssistant, entry: config_entries.ConfigEntry) -> bool:
+    """Unload a config entry."""
+    return True
