@@ -1333,8 +1333,9 @@ def create_app(data_dir: Path, static_dir: Path | None) -> web.Application:
 
     if static_dir and (static_dir / "index.html").exists():
         async def spa(request: web.Request) -> web.FileResponse:
-            path = (static_dir / request.match_info["tail"]).resolve()
-            if path.is_file() and static_dir.resolve() in path.parents:
+            tail = request.match_info.get("tail", "")
+            path = (static_dir / tail).resolve() if tail else (static_dir / "index.html")
+            if tail and path.is_file() and static_dir.resolve() in path.parents:
                 # 带内容哈希的静态资源可长期缓存；入口文件不缓存，保证发版后浏览器立即拿到新版本。
                 immutable = "assets/" in path.as_posix()
                 return web.FileResponse(path, headers={"Cache-Control": "public, max-age=31536000, immutable" if immutable else "no-cache"})
