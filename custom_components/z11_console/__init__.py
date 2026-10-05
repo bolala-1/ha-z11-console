@@ -58,7 +58,7 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
     if not console.store.token():
         console.store.set_token(custom_token)
         settings.data_source = "live"
-        console.store.save_settings()
+        console.store.save()
 
     # Start standalone AppRunner on port 8766 inside HA process
     runner = web.AppRunner(subapp)
